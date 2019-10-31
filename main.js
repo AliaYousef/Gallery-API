@@ -1,75 +1,39 @@
 document.getElementById('aa').addEventListener('click', addData);
 let arr = [];
-let num = 1;
-data(num);
+let num = 0;
+data();
 
 function data() {
     const myheaders = new Headers();
     myheaders.append('Authorization', 'Bearer ETnS0SprqU6-h4vaPmVUxO0SJ4bOZGyqO7QU');
-    fetch('https://gorest.co.in/public-api/photos?page=' + num, {
+    fetch('https://gorest.co.in/public-api/photos', {
             method: 'GET',
             headers: myheaders,
         })
         .then(Response =>
             Response.json())
         .then(result => {
-            arr = result.result,
-                addData()
+            arr.push(result.result);
+            addData();
+            num++;
+            console.log(arr);
         });
-
-    num++;
 }
 
-
-function data1() {
-    const myheaders = new Headers();
-    myheaders.append('Authorization', 'Bearer ETnS0SprqU6-h4vaPmVUxO0SJ4bOZGyqO7QU');
-    fetch('https://gorest.co.in/public-api/photos?page=' + num, {
-            method: 'GET',
-            headers: myheaders,
-        })
-        .then(Response =>
-            Response.json())
-        .then(result => {
-            arr = result.result,
-                addData()
-        });
-
-    const html = arr.map((item, index) => {
-        return '<img class="img1" src="' + item.thumbnail + '" data-id="' + index + '" onClick="togglePhoto(event)">';
-    });
-    document.getElementById('add1').innerHTML += html.join('');
-
-
-
-    num++;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-console.log(num);
 
 function addData() {
-    const html = arr.map((item, index) => {
+    const arr1 = arr[num];
+
+    const html = arr1.map((item, index) => {
+        console.log(item.thumbnail);
         return '<img class="img1" src="' + item.thumbnail + '" data-id="' + index + '" onClick="togglePhoto(event)">';
     });
-    document.getElementById('add1').innerHTML += html.join('');
+const div = document.createElement("DIV");
+const bigdiv = document.getElementById('add1');
+console.log(html);
+div.setAttribute('id','small'+num);   
+bigdiv.appendChild(div);
+document.getElementById('small'+num).innerHTML = html.join('');
 }
 
 function togglePhoto(event) {
@@ -85,8 +49,3 @@ document.getElementById("close").addEventListener('click', close);
 function close() {
     document.getElementById("aa").style.visibility = "hidden";
 }
-
-// function addData (){
-//   console.log(arr);
-//   renderGallery(arr) 
-// }
